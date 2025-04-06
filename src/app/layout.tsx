@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Footer, Layout, Navbar, ThemeSwitch } from "nextra-theme-docs";
+import { Head } from "nextra/components";
 import { getPageMap } from "nextra/page-map";
 import "nextra-theme-docs/style.css";
 import "./globals.css";
@@ -20,6 +21,9 @@ export default async function RootLayout({
       lang="en" // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
       suppressHydrationWarning
     >
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <body className="antialiased">
         <Layout pageMap={await getPageMap()}>
           <Navbar
