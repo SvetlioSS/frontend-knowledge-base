@@ -1,0 +1,217 @@
+import { Table } from 'nextra/components'
+
+# HTML5
+
+## HTML Basics
+- What is HTML?
+- HTML vs XHTML?
+- What is HTML5?
+- What is Doctype?
+- What are tags?
+- What are elements?
+- What are attributes?
+
+## Main tags
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+<body>
+```
+
+## Head tags
+```html
+<style>
+<meta>
+<link>
+<script>
+<noscript>
+<base>
+```
+
+## Text content tags
+```html
+<h1> to <h6>
+<p>
+<hr>
+<br>
+<pre>
+```
+
+## Text formatting tags
+```html
+<b>
+<strong>
+<i>
+<em>
+<mark>
+<small>
+<del>
+<ins>
+<sub>
+<sup>
+```
+
+## Quotations tags
+```html
+<blockquote>
+<q>
+<abbr>
+<address>
+<cite>
+<bdo>
+```
+
+## Links
+a - links best practices
+  - target, href, mailto:, 
+  - bookmarking
+
+## Images
+img - image best practices
+  - src
+  - alt
+  - absolute vs relative path
+  - width - mandatory
+  - height - mandatory
+  - TODOOOOO image formats
+  - image maps
+  - picture 
+  - background images and CSS attributes
+
+## Favicons
+favicons
+
+## Tables
+```html
+<table>
+<tr>
+<td>
+<th>
+<thead>
+<tbody>
+<tfoot>
+<caption>
+<col>
+<colgroup>
+```
+
+- border collapse
+- colspan & rowspan
+
+## Lists
+Ordered, unordered and description lists.
+Lists have type options via `type` and `list-style-type`
+
+```html
+<ul>
+<ol>
+<li>
+<dl>
+<dt>
+<dd>
+```
+
+## Div & Span
+inline vs block elements
+
+## Semantic HTML
+```html
+<article>
+<aside>
+<details>
+<figcaption>
+<figure>
+<footer>
+<header>
+<main>
+<mark>
+<nav>
+<section>
+<summary>
+<time>
+```
+
+## HTML vector graphics
+```html
+<canvas>
+<svg>
+```
+
+## HTML Media
+```html
+<video>
+<audio>
+```
+
+Youtube videos - Easiest way to handle videos. Just embed the video as an iframe.
+
+## Charsets, entities, emojis and symbols
+- Charsets:
+1. ASCII
+2. ANSI (Windows-1252)
+3. ISO-8859-1
+4. UTF-8 - recommended by the HTML5 spec
+- Escaping
+
+## URL encoding
+URLs can only be sent over the Internet using the ASCII character-set. If a URL contains characters outside the ASCII set, the URL has to be converted.
+
+URL encoding converts non-ASCII characters into a format that can be transmitted over the Internet.
+
+URL encoding replaces non-ASCII characters with a "%" followed by hexadecimal digits.
+
+URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign, or %20.
+
+## Iframes
+
+stacking context
+box model
+attributes - style, class, id, name
+data- attribute
+
+## Colors
+* HEX - #rrggbb
+* RGB - rgb(red, green, blue)
+* RGBA - rgba(red, green, blue, opacity)
+* HSL - hsl(147, 50%, 47%)
+* HSLA - hsla(147, 50%, 47%, 0.3)
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Use case</Table.Th>
+      <Table.Th>Choose</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>Simple solid color</Table.Td>
+      <Table.Td>HEX</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Need transparency</Table.Td>
+      <Table.Td>RGBA</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Want to manipulate color dynamically</Table.Td>
+      <Table.Td>HSL</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+## CSS
+1. What is CSS?
+2. How to add CSS?
+  * Inline
+  * Internal
+  * External
+
+specificity
+units
+selectors
+
+Resources:
+https://web.dev/learn/html
+https://www.w3schools.com/html/html_intro.asp
