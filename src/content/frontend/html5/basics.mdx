@@ -1,4 +1,4 @@
-import { Table } from 'nextra/components'
+import { Table } from "nextra/components";
 
 # HTML5
 
@@ -65,7 +65,7 @@ import { Table } from 'nextra/components'
 
 ## Links
 a - links best practices
-  - target, href, mailto:, 
+  - target, href, mailto:,
   - bookmarking
 
 ## Images
@@ -77,7 +77,7 @@ img - image best practices
   - height - mandatory
   - TODOOOOO image formats
   - image maps
-  - picture 
+  - picture
   - background images and CSS attributes
 
 ## Favicons
@@ -149,10 +149,10 @@ Youtube videos - Easiest way to handle videos. Just embed the video as an iframe
 
 ## Charsets, entities, emojis and symbols
 - Charsets:
-1. ASCII
-2. ANSI (Windows-1252)
-3. ISO-8859-1
-4. UTF-8 - recommended by the HTML5 spec
+  1. ASCII
+  2. ANSI (Windows-1252)
+  3. ISO-8859-1
+  4. UTF-8 - recommended by the HTML5 spec
 - Escaping
 
 ## URL encoding
@@ -171,12 +171,180 @@ box model
 attributes - style, class, id, name
 data- attribute
 
+## CSS
+* What is CSS?
+* How to add CSS? (Inline, Internal, External)
+* What is specificity?
+* What are selectors, properties and values?
+
+### Cascading Order
+What style will be used when there is more than one style specified for an HTML element?
+
+All the styles in a page will "cascade" into a new "virtual" style sheet by the following rules, where number one has the highest priority:
+
+Inline style (inside an HTML element)
+External and internal style sheets (in the head section)
+Browser default
+So, an inline style has the highest priority, and will override external and internal styles and browser defaults.
+
+## CSS Selectors
+
+### Simple selectors
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Selector</Table.Th>
+      <Table.Th>Example</Table.Th>
+      <Table.Th>Example description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>#id</Table.Td>
+      <Table.Td>#firstname</Table.Td>
+      <Table.Td>Selects the element with id="firstname"</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>.class</Table.Td>
+      <Table.Td>.intro</Table.Td>
+      <Table.Td>Selects all elements with class="intro"</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>\*</Table.Td>
+      <Table.Td>\*</Table.Td>
+      <Table.Td>Selects all elements</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>element</Table.Td>
+      <Table.Td>p</Table.Td>
+      <Table.Td>Selects all &lt;p&gt; elements</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>element,element,...</Table.Td>
+      <Table.Td>div, p</Table.Td>
+      <Table.Td>
+        Selects all &lt;div&gt; elements and all &lt;p&gt; elements
+      </Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### Attribute selectors
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Selector</Table.Th>
+      <Table.Th>Example</Table.Th>
+      <Table.Th>Example description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>[attribute]</Table.Td>
+      <Table.Td>[lang]</Table.Td>
+      <Table.Td>Selects all elements with a lang attribute</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute=value]</Table.Td>
+      <Table.Td>[lang="it"]</Table.Td>
+      <Table.Td>Selects all elements with lang="it"</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute~=value]</Table.Td>
+      <Table.Td>[title~="flower"]</Table.Td>
+      <Table.Td>
+        Selects all elements with a title attribute containing the word "flower"
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute|=value]</Table.Td>
+      <Table.Td>[lang|="en"]</Table.Td>
+      <Table.Td>
+        Selects all elements with a lang attribute value equal to "en" or
+        starting with "en-"
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute^=value]</Table.Td>
+      <Table.Td>[href^="https"]</Table.Td>
+      <Table.Td>
+        Selects all elements with a href attribute value that begins with
+        "https"
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute$=value]</Table.Td>
+      <Table.Td>[href$=".pdf"]</Table.Td>
+      <Table.Td>
+        Selects all elements with a href attribute value ends with ".pdf"
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>[attribute*=value]</Table.Td>
+      <Table.Td>[href*="w3schools"]</Table.Td>
+      <Table.Td>
+        Selects all elements with a href attribute value containing the
+        substring "w3schools"
+      </Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### Nesting selector
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Selector</Table.Th>
+      <Table.Th>Example</Table.Th>
+      <Table.Th>Example description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>&</Table.Td>
+      <Table.Td>&</Table.Td>
+      <Table.Td>
+        Applies styles for an element within the context of another element
+      </Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+Nesting Example
+
+```css
+.a {
+  /* styles for element with class="a" */
+  .b {
+    /* styles for element with class="b" which is a descendant of class="a" */
+  }
+  &.b {
+    /* styles for element with class="a b" */
+  }
+}
+
+/* the browser parses this as */
+.a {
+  /* styles for element with class="a" */
+}
+.a .b {
+  /* styles for element with class="b" which is a descendant of class="a" */
+}
+.a.b {
+  /* styles for element with class="a b" */
+}
+```
+
 ## Colors
-* HEX - #rrggbb
-* RGB - rgb(red, green, blue)
-* RGBA - rgba(red, green, blue, opacity)
-* HSL - hsl(147, 50%, 47%)
-* HSLA - hsla(147, 50%, 47%, 0.3)
+
+- HEX - #rrggbb
+- RGB - rgb(red, green, blue)
+- RGBA - rgba(red, green, blue, opacity)
+- HSL - hsl(147, 50%, 47%)
+- HSLA - hsla(147, 50%, 47%, 0.3)
 
 <Table>
   <thead>
@@ -200,13 +368,6 @@ data- attribute
     </Table.Tr>
   </tbody>
 </Table>
-
-## CSS
-1. What is CSS?
-2. How to add CSS?
-  * Inline
-  * Internal
-  * External
 
 specificity
 units
