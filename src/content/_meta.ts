@@ -8,4 +8,5 @@ export default {
   devops: "DevOps",
   "cs-fundamentals": "Computer Science",
   "product-and-pm": "Product & PM",
+  interviews: "Interview Preparation",
 };
