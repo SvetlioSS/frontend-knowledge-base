@@ -164,20 +164,13 @@ URL encoding replaces non-ASCII characters with a "%" followed by hexadecimal di
 
 URLs cannot contain spaces. URL encoding normally replaces a space with a plus (+) sign, or %20.
 
-## Iframes
-
-stacking context
-box model
-attributes - style, class, id, name
-data- attribute
-
 ## CSS
 * What is CSS?
 * How to add CSS? (Inline, Internal, External)
 * What is specificity?
 * What are selectors, properties and values?
 
-### Cascading Order
+### CSS Cascading Order
 What style will be used when there is more than one style specified for an HTML element?
 
 All the styles in a page will "cascade" into a new "virtual" style sheet by the following rules, where number one has the highest priority:
@@ -189,7 +182,7 @@ So, an inline style has the highest priority, and will override external and int
 
 ## CSS Selectors
 
-### Simple selectors
+### CSS Simple selectors
 
 <Table>
   <thead>
@@ -230,7 +223,7 @@ So, an inline style has the highest priority, and will override external and int
   </tbody>
 </Table>
 
-### Attribute selectors
+### CSS Attribute selectors
 
 <Table>
   <thead>
@@ -292,7 +285,7 @@ So, an inline style has the highest priority, and will override external and int
   </tbody>
 </Table>
 
-### Nesting selector
+### CSS Nesting & Nesting selector
 
 <Table>
   <thead>
@@ -338,7 +331,225 @@ Nesting Example
 }
 ```
 
-## Colors
+### CSS Combinators
+
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Name</Table.Th>
+      <Table.Th>Example</Table.Th>
+      <Table.Th>Example description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>Child combinator</Table.Td>
+      <Table.Td>div > p</Table.Td>
+      <Table.Td>
+        Selects every &lt;p&gt; element that are direct children of a &lt;div&gt; element
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Descendant combinator</Table.Td>
+      <Table.Td>div p</Table.Td>
+      <Table.Td>
+        Selects all &lt;p&gt; elements inside &lt;div&gt; elements
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Namespace separator</Table.Td>
+      <Table.Td>ns | h2</Table.Td>
+      <Table.Td>
+        Selects all &lt;h2&gt; elements in namespace ns
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Next-sibling combinator</Table.Td>
+      <Table.Td>div + p</Table.Td>
+      <Table.Td>
+        Selects the first &lt;p&gt; element that is placed immediately after &lt;div&gt; elements
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Selector list</Table.Td>
+      <Table.Td>div, p</Table.Td>
+      <Table.Td>
+        Selects all &lt;div&gt; elements and all &lt;p&gt; elements
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Subsequent-sibling combinator</Table.Td>
+      <Table.Td>p ~ ul</Table.Td>
+      <Table.Td>
+        Selects all &lt;ul&gt; elements that are preceded by a &lt;p&gt; element
+      </Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### CSS Pseudo-classes
+A pseudo-class is used to define a special state of an element.
+
+Some examples (not all, there is a long long list of pseudo classes):
+```css
+a:link
+a:visited
+a:hover
+a:active
+input:enabled
+input:disabled
+:first-child
+```
+
+### CSS Pseudo-elements
+A CSS pseudo-element is used to style specific parts of an element.
+
+```css
+::before
+::after
+::selection
+::backdrop
+::placeholder
+```
+
+## CSS Backgrounds
+```css
+background
+background-attachment
+background-clip
+background-image
+background-blend-mode
+background-color
+background-position
+background-repeat
+background-size
+opacity
+```
+
+## CSS Space & Size, Box Model
+* What is box model?
+
+```css
+border
+border-color
+border-radius
+border-style
+border-width
+
+margin
+padding
+
+outline-style
+outline-color
+outline-width
+outline-offset
+outline
+
+height
+width
+max-height
+max-width
+min-height
+min-width
+```
+
+> [!NOTE]
+>
+> margin auto - pushing element to one or multiple sides
+
+## CSS Text
+```css
+/* Alignment */
+direction
+text-align
+text-align-last
+unicode-bidi
+vertical-align
+
+/* Transform */
+text-transform
+
+/* Decoration */
+text-decoration-line
+text-decoration-color
+text-decoration-style
+text-decoration-thickness
+text-decoration
+
+/* Spacing */
+text-indent
+letter-spacing
+line-height
+word-spacing
+white-space
+
+/* Shadow */
+text-shadow
+```
+
+## CSS Fonts
+Font families:
+* Serif
+* Sans-serif
+* Monospace
+* Cursive
+* Fantasy
+
+> [!NOTE]
+>
+> Always have Fallback fonts!
+> Always end the list with a generic font family name! (eg sans-serif)
+
+```css
+font
+font-style
+font-variant
+font-weight
+font-size
+```
+
+## CSS Display
+inline vs block vs inline-block
+```css
+display /* inline-[block/grid/flex] allows settings height and width compared to inline */
+visibility
+```
+
+## CSS Position
+```css
+static
+relative /* is positioned relative to its normal position. Allowing to set top, bottom, left, right properties. */
+fixed /* is positioned relative to the viewport. Allowing to set top, bottom, left, right properties. */
+absolute /* is positioned relative to the nearest positioned ancestor. Allowing to set top, bottom, left, right properties. */
+sticky /* is positioned based on the user's scroll position. A sticky element toggles between relative and fixed, depending on the scroll position. */
+```
+
+## CSS Z-index
+* What is stacking context?
+* What is stacking order?
+
+### CSS Stacking context
+A stacking context is like a self-contained layer of elements on a web page. Elements inside it stack (using z-index) only with each other, not with elements in other stacking contexts. Think of it like each context being its own mini whiteboard on top of the main canvas.
+
+The `z-index` property specifies the stack order of an element within it's stacking context. It's not working across all stacking contexts.
+
+> [!NOTE]
+>
+> z-index only works on positioned elements (position: absolute, position: relative, position: fixed, or position: sticky) and flex items (elements that are direct children of display: flex elements)
+
+## CSS Overflow
+```css
+visible /* Default. The overflow is not clipped. The content renders outside the element's box */
+hidden /* The overflow is clipped, and the rest of the content will be invisible */
+scroll /* The overflow is clipped, and a scrollbar is added to see the rest of the content */
+auto /* Similar to scroll, but it adds scrollbars only when necessary */
+```
+
+> [!NOTE]
+>
+> The overflow property only works for block elements with a specified height.
+
+## CSS Colors
 
 - HEX - #rrggbb
 - RGB - rgb(red, green, blue)
@@ -369,10 +580,152 @@ Nesting Example
   </tbody>
 </Table>
 
-specificity
-units
-selectors
+## CSS Units
 
-Resources:
-https://web.dev/learn/html
-https://www.w3schools.com/html/html_intro.asp
+### CSS Absolute lengths
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Unit</Table.Th>
+      <Table.Th>Description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>cm</Table.Td>
+      <Table.Td>centimeters</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>mm</Table.Td>
+      <Table.Td>millimeters</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>in</Table.Td>
+      <Table.Td>inches (1in = 96px = 2.54cm)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>px</Table.Td>
+      <Table.Td>pixels (1px = 1/96th of 1in). relative to the viewing device. For low-dpi devices, 1px is one device pixel (dot) of the display.</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>pt</Table.Td>
+      <Table.Td>points (1pt = 1/72 of 1in)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>pc</Table.Td>
+      <Table.Td>picas (1pc = 12 pt)</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+### CSS Relative lengths
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Unit</Table.Th>
+      <Table.Th>Description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>em</Table.Td>
+      <Table.Td>Relative to the font-size of the element (2em means 2 times the size of the current font)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>ex</Table.Td>
+      <Table.Td>Relative to the x-height of the current font (rarely used)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>ch</Table.Td>
+      <Table.Td>Relative to width of the "0" (zero)</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>rem</Table.Td>
+      <Table.Td>Relative to font-size of the root element</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>vw</Table.Td>
+      <Table.Td>Relative to 1% of the width of the viewport*</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>vh</Table.Td>
+      <Table.Td>Relative to 1% of the height of the viewport*</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>vmin</Table.Td>
+      <Table.Td>Relative to 1% of viewport's* smaller dimension</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>vmax</Table.Td>
+      <Table.Td>Relative to 1% of viewport's* larger dimension</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>%</Table.Td>
+      <Table.Td>Relative to the parent element</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+> [!NOTE]
+>
+> `em` and `rem` should be used in most cases. 
+> `px` occasionally for specific cases, mostly small shadows, borders etc.
+> `vw`, `vh`, `vmin`, `vmax` when viewport units are needed.
+
+## CSS specificity
+If there are two or more CSS rules that point to the same element, the selector with the highest specificity will "win", and its style declaration will be applied to that HTML element.
+
+Specificity Hierarchy
+<Table>
+  <thead>
+    <Table.Tr>
+      <Table.Th>Priority</Table.Th>
+      <Table.Th>Example</Table.Th>
+      <Table.Th>Description</Table.Th>
+    </Table.Tr>
+  </thead>
+  <tbody>
+    <Table.Tr>
+      <Table.Td>Inline style</Table.Td>
+      <Table.Td>&lt;h1 style="color: pink;"&gt;</Table.Td>
+      <Table.Td>Highest priority, directly applied with the style attribute</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Id selectors</Table.Td>
+      <Table.Td>#navbar</Table.Td>
+      <Table.Td>Second highest priority, identified by the unique id attribute of an element</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Classes and pseudo-classes</Table.Td>
+      <Table.Td>.test, :hover</Table.Td>
+      <Table.Td>Third highest priority, targeted using class names</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Attributes</Table.Td>
+      <Table.Td>[type="text"]</Table.Td>
+      <Table.Td>Low priority, applies to attributes</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>Elements and pseudo-elements</Table.Td>
+      <Table.Td>h1, ::before, ::after</Table.Td>
+      <Table.Td>Lowest priority, applies to HTML elements and pseudo-elements</Table.Td>
+    </Table.Tr>
+  </tbody>
+</Table>
+
+> [!NOTE]
+>
+> `!important` can be used to override the specificity and force a rule to be applied. It is an anti-pattern and should only be used in specific cases like overstyling third party styles.
+
+## CSS Math Functions
+```css
+#div1 {
+  width: calc(100% - 100px);
+}
+#div2 {
+  width: min(100%, 300px); /* Takes the smaller value */
+}
+#div3 {
+  width: max(100%, 300px); /* Takes the larger value */
+}
+```
