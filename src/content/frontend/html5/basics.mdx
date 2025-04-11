@@ -485,6 +485,13 @@ white-space
 
 /* Shadow */
 text-shadow
+
+/* Text effects */
+text-justify
+text-overflow
+word-break
+word-wrap
+writing-mode
 ```
 
 ## CSS Fonts
@@ -507,6 +514,30 @@ font-variant
 font-weight
 font-size
 ```
+
+### Different Font Formats
+
+1. <strong>TrueType Fonts (TTF)</strong> - TrueType is a font standard developed in the late 1980s, by Apple and Microsoft. TrueType is the most common font format for both the Mac OS and Microsoft Windows operating systems.
+2. <strong>OpenType Fonts (OTF)</strong> - OpenType is a format for scalable computer fonts. It was built on TrueType, and is a registered trademark of Microsoft. OpenType fonts are used commonly today on the major computer platforms.
+3. <strong>The Web Open Font Format (WOFF)</strong> - WOFF is a font format for use in web pages. It was developed in 2009, and is now a W3C Recommendation. WOFF is essentially OpenType or TrueType with compression and additional metadata. The goal is to support font distribution from a server to a client over a network with bandwidth constraints.
+4. <strong>The Web Open Font Format (WOFF 2.0)</strong> - TrueType/OpenType font that provides better compression than WOFF 1.0.
+5. <strong>SVG Fonts/Shapes</strong> - SVG fonts allow SVG to be used as glyphs when displaying text. The SVG 1.1 specification define a font module that allows the creation of fonts within an SVG document. You can also apply CSS to SVG documents, and the @font-face rule can be applied to text in SVG documents.
+6. <strong>Embedded OpenType Fonts (EOT)</strong> - EOT fonts are a compact form of OpenType fonts designed by Microsoft for use as embedded fonts on web pages.
+
+### The CSS @font-face Rule
+Web fonts allow Web designers to use fonts that are not installed on the user's computer.
+
+When you have found/bought the font you wish to use, just include the font file on your web server, and it will be automatically downloaded to the user when needed.
+
+Your "own" fonts are defined within the CSS @font-face rule.
+
+> [!NOTE]
+>
+> Use @font-face when:
+> * You want a specific font not guaranteed to be on all systems. Example: You're using a rare font like Proxima Nova or a custom-designed one.
+> * You need better control over font loading behavior.
+> * You can host fonts locally or from a CDN, and manage formats (e.g., WOFF2, TTF) for performance and compatibility.
+> * You want to self-host fonts instead of using services like Google Fonts.
 
 ## CSS Display
 inline vs block vs inline-block
