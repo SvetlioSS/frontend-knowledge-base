@@ -7,6 +7,7 @@ export default {
   blockchain: "Blockchain",
   devops: "DevOps",
   "cs-fundamentals": "Computer Science",
+  ux: "User Experience",
   "product-and-pm": "Product & PM",
   interviews: "Interview Preparation",
 };

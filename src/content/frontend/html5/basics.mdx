@@ -428,6 +428,7 @@ opacity
 
 ## CSS Space & Size, Box Model
 * What is box model?
+* `box-sizing` property
 
 ```css
 border
@@ -456,6 +457,20 @@ min-width
 > [!NOTE]
 >
 > margin auto - pushing element to one or multiple sides
+
+By default, the width and height of an element is calculated like this:
+
+width + padding + border = actual width of an element
+
+height + padding + border = actual height of an element
+
+This means: When you set the width/height of an element, the element often appears bigger than you have set (because the element's border and padding are added to the element's specified width/height)
+
+The `box-sizing` property allows us to include the padding and border in an element's total width and height.
+
+If you set `box-sizing: border-box;` on an element, padding and border are included in the width and height.
+
+This is the current best practice to ensure layouts are predictable in responsive scenarios.
 
 ## CSS Text
 ```css
@@ -760,3 +775,147 @@ Specificity Hierarchy
   width: max(100%, 300px); /* Takes the larger value */
 }
 ```
+
+## CSS 2D transforms
+transform prop:
+* `translate()`
+* `rotate()`
+* `scaleX()`
+* `scaleY()`
+* `scale()`
+* `skewX()`
+* `skewY()`
+* `skew()`
+* `matrix()`
+
+## CSS 3D transforms
+
+## CSS Transitions
+
+## CSS Animations
+
+## CSS Filters
+`filter` - property is used to add visual effects (like blur and saturation) to elements.
+
+Within the filter property, you can use the following CSS functions:
+
+* `blur()`
+* `brightness()`
+* `contrast()`
+* `drop-shadow()`
+* `grayscale()`
+* `hue-rotate()`
+* `invert()`
+* `opacity()`
+* `saturate()`
+* `sepia()`
+
+## CSS Object fit
+`object-fit` - property is used to specify how an `<img>` or `<video>` should be resized to fit its container.
+Possible values are:
+* `fill` - This is default. The image is resized to fill the given dimension. If necessary, the image will be stretched or squished to fit
+* `contain` - The image keeps its aspect ratio, but is resized to fit within the given dimension
+* `cover` - The image keeps its aspect ratio and fills the given dimension. The image will be clipped to fit
+* `none` - The image is not resized
+* `scale-down` - the image is scaled down to the smallest version of none or contain
+
+`object-position` - property is used to specify how an `<img>` or `<video>` should be positioned within its container.
+
+Example:
+```css
+img {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  object-position: 15% 100%;
+}
+```
+
+## CSS Resets
+It is a best practice to "reset" some browser CSS like:
+* set img, video to be responsive 
+* reset margins
+* list styles
+* font defaults
+* force `box-sizing: border-box;`
+
+> [!NOTE]
+>
+> CSS frameworks and design systems have CSS resets by default.
+
+## CSS Variables & Custom properties
+Custom properties (sometimes referred to as CSS variables) are entities defined by CSS authors that represent specific values to be reused throughout a document. They are set using the `@property` at-rule or by custom property syntax (e.g., `--primary-color: blue;`). Custom properties are accessed using the CSS var() function (e.g., `color: var(--primary-color);`).
+
+They can have global or local scope.
+
+Global scope example:
+```css
+:root {
+  --blue: #1e90ff;
+  --white: #ffffff;
+}
+
+body { background-color: var(--blue); }
+```
+
+Local scope is on selector level, example:
+```css
+#div1 {
+  --local-blue: #1e90ff;
+
+  background-color: var(--local-blue);
+}
+```
+
+Variables can be overriden example:
+```css
+:root {
+  --blue: #1e90ff;
+  --white: #ffffff;
+}
+
+button {
+  --blue: #0000ff; /* local variable will override global */
+  background-color: var(--white);
+  color: var(--blue);
+  border: 1px solid var(--blue);
+  padding: 5px;
+}
+```
+
+Variables can be changed with JavaScript like:
+```html
+<script>
+  // Get the root element
+  var r = document.querySelector(':root');
+
+  // Create a function for getting a variable value
+  function myFunction_get() {
+    // Get the styles (properties and values) for the root
+    var rs = getComputedStyle(r);
+    // Alert the value of the --blue variable
+    alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
+  }
+
+  // Create a function for setting a variable value
+  function myFunction_set() {
+    // Set the value of variable --blue to another value (in this case "lightblue")
+    r.style.setProperty('--blue', 'lightblue');
+  }
+</script>
+```
+
+
+## CSS @property Rule
+The `@property` rule has data type checking and constraining, sets default values, and defines whether the property can inherit values or not.
+```css
+@property --background-color {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: blue;
+}
+```
+
+## CSS Houdini
+
+CSS Houdini is a set of APIs that expose parts of the CSS engine. This makes it easier for developers to create extensions for CSS. These extensions might be to polyfill features that are not yet available in a browser, experiment with new ways of doing layout, or add creative borders or other effects.
