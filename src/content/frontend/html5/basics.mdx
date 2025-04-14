@@ -777,7 +777,11 @@ Specificity Hierarchy
 ```
 
 ## CSS 2D transforms
-transform prop:
+
+2D transform properties:
+* `transform`
+
+2D transform functions:
 * `translate()`
 * `rotate()`
 * `scaleX()`
@@ -788,11 +792,345 @@ transform prop:
 * `skew()`
 * `matrix()`
 
+> [!NOTE]
+>
+> `transform` property works fine with `position: absolute;`. 
+> Position absolute will first position the element based on the nearest positioned ancestor and top/bottom/left/right props.
+> transform will visually shift the element from that position.
+
+> [!IMPORTANT]
+>
+> * `transform` is purely visual effect it doesn`t affect the layout or document flow. position absolute is affecting the flow, layouts and sibling position.
+> * `transform` is more performant as it's not triggering layout shifts. Perfect for animations.
+
 ## CSS 3D transforms
+
+3D transform properties:
+* `transform` - Applies a 2D or 3D transformation to an element
+* `transform-origin` - Allows you to change the position on transformed elements
+* `transform-style`	- Specifies how nested elements are rendered in 3D space
+* `perspective`	- Specifies the perspective on how 3D elements are viewed
+* `perspective-origin` - Specifies the bottom position of 3D elements
+* `backface-visibility` - Defines whether or not an element should be visible when not facing the screen
+
+3D transform functions:
+* `matrix3d()` - Defines a 3D transformation, using a 4x4 matrix of 16 values
+* `translate3d()` - Defines a 3D translation
+* `translateZ()` - Defines a 3D translation, using only the value for the Z-axis
+* `scale3d()` - Defines a 3D scale transformation
+* `scaleZ()` - Defines a 3D scale transformation by giving a value for the Z-axis
+* `rotate3d()` - Defines a 3D rotation
+* `rotateX()` - Defines a 3D rotation along the X-axis
+* `rotateY()` - Defines a 3D rotation along the Y-axis
+* `rotateZ()` - Defines a 3D rotation along the Z-axis
+* `perspective()` - Defines a perspective view for a 3D transformed element
 
 ## CSS Transitions
 
+Transitions allows you to change property values smoothly, over a given duration.
+
+* `transition` - A shorthand property for setting the four transition properties into a single property
+* `transition-delay` - Specifies a delay (in seconds) for the transition effect
+* `transition-duration` - Specifies how many seconds or milliseconds a transition effect takes to complete
+* `transition-property` - Specifies the name of the CSS property the transition effect is for
+* `transition-timing-function` - Specifies the speed curve of the transition effect
+
+### How to Use CSS Transitions?
+To create a transition effect, you must specify two things:
+1. The CSS property you want to add an effect to
+2. The duration of the effect
+
+> [!NOTE]
+>
+> If the duration part is not specified, the transition will have no effect, because the default value is 0.
+
+Example: simple transition
+```css
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  transition: width 2s; /* The transition effect will start when the specified property (width) changes value. */
+}
+
+div:hover {
+  width: 300px;
+}
+```
+
+Example: multiple transition
+```css
+div {
+  transition: width 2s, height 4s;
+}
+```
+
+### Speed Curve of the Transition
+The `transition-timing-function` property specifies the speed curve of the transition effect. It can have the following values:
+
+* `ease` - specifies a transition effect with a slow start, then fast, then end slowly (this is default)
+* `linear` - specifies a transition effect with the same speed from start to end
+* `ease-in` - specifies a transition effect with a slow start
+* `ease-out` - specifies a transition effect with a slow end
+* `ease-in-out` - specifies a transition effect with a slow start and end
+* `cubic-bezier(n,n,n,n)` - lets you define your own values in a cubic-bezier function
+
+```css
+#div1 {transition-timing-function: linear;}
+#div2 {transition-timing-function: ease;}
+#div3 {transition-timing-function: ease-in;}
+#div4 {transition-timing-function: ease-out;}
+#div5 {transition-timing-function: ease-in-out;}
+```
+
+### Delay the Transition
+
+The transition-delay property specifies a delay (in seconds) for the transition effect.
+
+```css
+div {
+  transition-delay: 1s;
+}
+```
+
+### Transition + Transformation
+
+Example: add a transition effect to the transformation:
+
+```css
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  transition: width 2s, height 2s, transform 2s;
+}
+
+div:hover {
+  width: 300px;
+  height: 300px;
+  transform: rotate(180deg);
+}
+```
+
+### Long vs Short Transition Syntax
+
+Example: long syntax, separate properties
+```css
+div {
+  transition-property: width;
+  transition-duration: 2s;
+  transition-timing-function: linear;
+  transition-delay: 1s;
+}
+```
+
+Example: short syntax, one property
+```css
+div {
+  transition: width 2s linear 1s;
+}
+```
+
 ## CSS Animations
+
+CSS allows animation of HTML elements without using JavaScript.
+* `@keyframes`
+* `animation-name`
+* `animation-duration`
+* `animation-delay`
+* `animation-iteration-count`
+* `animation-direction`
+* `animation-timing-function`
+* `animation-fill-mode`
+* `animation`
+
+### What are CSS Animations?
+
+An animation lets an element gradually change from one style to another.
+
+You can change as many CSS properties you want, as many times as you want.
+
+To use CSS animation, you must first specify some keyframes for the animation.
+
+Keyframes hold what styles the element will have at certain times.
+
+```css
+/* The animation code */
+@keyframes example {
+  from {background-color: red;}
+  to {background-color: yellow;}
+}
+
+/* The element to apply the animation to */
+div {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}
+```
+
+> [!NOTE]
+>
+> The animation-duration property defines how long an animation should take to complete. If the animation-duration property is not specified, no animation will occur, because the default value is 0s (0 seconds).
+
+```css
+/* The animation code */
+@keyframes example {
+  0%   {background-color:red; left:0px; top:0px;}
+  25%  {background-color:yellow; left:200px; top:0px;}
+  50%  {background-color:blue; left:200px; top:200px;}
+  75%  {background-color:green; left:0px; top:200px;}
+  100% {background-color:red; left:0px; top:0px;}
+}
+
+/* The element to apply the animation to */
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+}
+```
+
+### Delay an Animation
+
+The animation-delay property specifies a delay for the start of an animation.
+
+Example: 2 seconds delay before starting the animation:
+```css
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-delay: 2s;
+}
+```
+
+> [!TIP]
+>
+> Negative values are also allowed. If using negative values, the animation will start as if it had already been playing for N seconds.
+
+Example: the animation will start as if it had already been playing for 2 seconds
+```css
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-delay: -2s;
+}
+```
+
+### Set How Many Times an Animation Should Run
+
+The `animation-iteration-count` property specifies the number of times an animation should run.
+
+Example: run animation 3 times
+```css
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: 3;
+}
+```
+
+Example: make an animation infinite:
+```css
+div {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+```
+
+### Run Animation in Reverse Direction or Alternate Cycles
+
+The `animation-direction` property specifies whether an animation should be played forwards, backwards or in alternate cycles. It can have the following values:
+
+* `normal` - The animation is played as normal (forwards). This is default
+* `reverse` - The animation is played in reverse direction (backwards)
+* `alternate` - The animation is played forwards first, then backwards
+* `alternate-reverse` - The animation is played backwards first, then forwards
+
+### Specify the Speed Curve of the Animation
+
+The animation-timing-function property specifies the speed curve of the animation. It can have the following values:
+
+* `ease` - Specifies an animation with a slow start, then fast, then end slowly (this is default)
+* `linear` - Specifies an animation with the same speed from start to end
+* `ease-in` - Specifies an animation with a slow start
+* `ease-out` - Specifies an animation with a slow end
+* `ease-in-out` - Specifies an animation with a slow start and end
+* `cubic-bezier(n,n,n,n)` - Lets you define your own values in a cubic-bezier function
+
+### Specify the fill-mode For an Animation
+
+CSS animations do not affect an element before the first keyframe is played or after the last keyframe is played. The `animation-fill-mode` property can override this behavior.
+
+The `animation-fill-mode` property specifies a style for the target element when the animation is not playing (before it starts, after it ends, or both).
+
+The `animation-fill-mode` property can have the following values:
+
+* `none` - Default value. Animation will not apply any styles to the element before or after it is executing
+* `forwards` - The element will retain the style values that is set by the last keyframe (depends on animation-direction and animation-iteration-count)
+* `backwards` - The element will get the style values that is set by the first keyframe (depends on animation-direction), and retain this during the animation-delay period
+* `both` - The animation will follow the rules for both forwards and backwards, extending the animation properties in both directions
+
+Example: let the div element retain the style values set by the last keyframe when the animation ends
+```css
+div {
+  width: 100px;
+  height: 100px;
+  background: red;
+  position: relative;
+  animation-name: example;
+  animation-duration: 3s;  
+  animation-fill-mode: forwards;
+}
+
+@keyframes example {
+  from {top: 0px;}
+  to {top: 200px; background-color: blue;}
+}
+```
+
+### Animation Shorthand Property
+
+Example: long syntax
+```css
+div {
+  animation-name: example;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+```
+
+Example: short syntax
+```css
+div {
+  animation: example 5s linear 2s infinite alternate;
+}
+```
 
 ## CSS Filters
 `filter` - property is used to add visual effects (like blur and saturation) to elements.
