@@ -1,11 +1,11 @@
 export default {
   basics: "Basics",
-  layouts: "Layouts",
   forms: "Forms",
+  layouts: "Layouts",
   responsiveness: "Responsiveness",
+  iframes: "Iframes",
   accessibility: "Accessibility",
   seo: "SEO",
-  iframes: "Iframes",
   javascript: "JavaScript",
   apis: "HTML APIs",
 };

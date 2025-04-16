@@ -32,8 +32,53 @@ Properties:
 * `column-span`
 * `column-width`
 
-## Flexbox - TODO in depth
+## Flexbox
 
-## Grid - TODO in depth
+Used for one dimension containers. Either horizontal or vertical.
+
+Flex container properties:
+* `flex-direction` - row | row-reverse | column | column-reverse
+* `flex-wrap` - nowrap | wrap | wrap-reverse
+* `flex-flow` - shorthand for the `flex-direction` and `flex-wrap`
+* `justify-content` (main axis) - flex-start | flex-end | center | space-between | space-around | space-evenly | start | end | left | right ... + safe | unsafe
+* `align-items` (cross axis) - stretch | flex-start | flex-end | center | baseline | first baseline | last baseline | start | end | self-start | self-end + ... safe | unsafe;
+* `align-content` (cross axis) - flex-start | flex-end | center | space-between | space-around | space-evenly | stretch | start | end | baseline | first baseline | last baseline + ... safe | unsafe;
+* `gap`, `row-gap`, `column-gap`
+
+> [!TIP]
+>
+> `align-content` is the same as `justify-content` but for the cross axis.
+
+Flex items properties:
+* `order`
+* `flex-grow`
+* `flex-shrink`
+* `flex-basis` - initial size of a flex item before any space is distributed via `flex-grow` or taken away via `flex-shrink`.
+* `flex`
+* `align-self`
+
+> [!TIP]
+>
+> * flex-basis overrides width/height in a Flexbox context.
+> * Use flex-basis: 0 if you want equal growth from scratch (common in flex: 1 layouts).
+> * Use flex-basis: auto if you want items to start with their content size (common in flex: initial).
+
+```css
+.item {
+  flex-basis: 200px; /* This item wants to be 200px wide (or tall in a column layout), but I’m flexible if needed. */
+}
+```
+
+## Grid
+
+Used for two dimensional layouts where control over both the rows and columns is needed.
+
+Terms:
+* Grid container
+* Grid item - the children of the grid container
+* Grid line - the lines between the grid tracks
+* Grid track - whole row or column
+* Grid area - can have one or more grid cells
+* Grid cell
 
 ## Breakpoints
