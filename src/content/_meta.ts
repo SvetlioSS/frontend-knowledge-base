@@ -4,6 +4,7 @@ export default {
   frontend: "Frontend",
   backend: "Backend",
   mobile: "Mobile",
+  cloud: "Cloud",
   blockchain: "Blockchain",
   devops: "DevOps",
   "cs-fundamentals": "Computer Science",

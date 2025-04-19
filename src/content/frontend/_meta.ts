@@ -5,6 +5,7 @@ export default {
   react: "React",
   nextjs: "Next JS",
   "design-systems": "Design Systems",
+  "state-management": "State Management",
   testing: "Testing",
   advanced: "Advanced",
 };
