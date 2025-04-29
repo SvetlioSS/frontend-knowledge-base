@@ -1,3 +1,48 @@
 # Iframes
 
-Intro
+* What is an iframe?
+
+`sandbox` - used to set restrictions
+
+```html
+<iframe></iframe> <!-- No restrictions -->
+<iframe sandbox></iframe> <!-- Restricts everything -->
+<iframe sandbox="allow-scripts allow-same-origin"></iframe> <!-- Restricts everything and allow selectively -->
+```
+
+## Cross-domain communication
+
+### 1. Same-origin policy
+
+If the iframe is from a different origin, direct access to its DOM is blocked.
+
+### 2. `window.postMessage()`
+
+* Secure method for cross-origin communication.
+* Example:
+
+```js
+// Parent to iframe
+iframeEl.contentWindow.postMessage("hello", "https://example.com");
+
+// Inside iframe
+window.addEventListener("message", (event) => {
+  if (event.origin === "https://your-parent.com") {
+    console.log(event.data);
+  }
+});
+```
+
+### Lazy loading
+
+Iframes can be lazily loaded until in view by using the `loading="lazy"` attribute.
+
+```html
+<iframe src="..." loading="lazy"></iframe>
+```
+
+### Other Important Notes
+* SEO: Content inside iframes is not considered part of the parent document's content.
+* Analytics: Embedded iframes won't inherit tracking scripts unless explicitly integrated.
+* Interaction Limitations: Keyboard navigation and focus can be tricky, especially on mobile.
+* Accessibility: Provide a title attribute for screen readers.
