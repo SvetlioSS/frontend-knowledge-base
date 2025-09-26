@@ -1,3 +1,814 @@
 # React
 
-TODO
+## 1. Core React Foundations
+
+### JSX
+- Syntactic sugar for `React.createElement`.  
+- Only **expressions**, not statements.  
+
+```tsx
+// ✅ Valid
+const element = <h1>{user.name}</h1>;
+
+// ❌ Invalid
+const element = <h1>{if (loggedIn) "Hi"}</h1>;
+```
+⚠ **Pitfall:** `class` → `className`, `for` → `htmlFor`.
+
+---
+
+### Virtual DOM & Reconciliation
+
+* React builds a **virtual tree** and diffs against the previous one.
+* **Keys** are crucial for list items.
+
+```tsx
+// ✅ Correct
+todos.map(todo => <li key={todo.id}>{todo.text}</li>)
+
+// ⚠ Bad: index as key (breaks on reorder/delete)
+todos.map((todo, i) => <li key={i}>{todo.text}</li>)
+```
+
+---
+
+### Props vs State
+
+* **Props**: external, immutable.
+* **State**: internal, mutable.
+
+```tsx
+function Counter({ initial }: { initial: number }) {
+  const [count, setCount] = useState(initial); // state
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+⚠ Don’t mutate state directly (`count++`) → React won’t detect changes.
+
+---
+
+### Component Lifecycle
+
+* Class component phases:
+
+  * **Mount**: `componentDidMount`
+  * **Update**: `componentDidUpdate`
+  * **Unmount**: `componentWillUnmount`
+* Function components use `useEffect` instead.
+
+```tsx
+useEffect(() => {
+  console.log("mounted or deps changed");
+  return () => console.log("cleanup on unmount");
+}, [deps]);
+```
+
+---
+
+## 2. React Hooks
+
+### useState
+
+```tsx
+const [value, setValue] = useState(0);
+
+// Lazy init: expensiveCalc only runs once
+const [data, setData] = useState(() => expensiveCalc());
+```
+
+⚠ State updates are **asynchronous + batched**.
+
+```tsx
+// ✅ Correct
+setValue(prev => prev + 1);
+setValue(prev => prev + 1); // final value = +2
+
+// ⚠ Wrong
+setValue(value + 1);
+setValue(value + 1); // final value = +1
+```
+
+---
+
+### useEffect
+
+* Runs after render → for side effects.
+* Cleanup prevents memory leaks.
+
+```tsx
+useEffect(() => {
+  const id = setInterval(() => console.log("tick"), 1000);
+  return () => clearInterval(id);
+}, []);
+```
+
+⚠ **Pitfall:** Missing deps → stale closures or infinite loops.
+
+---
+
+### useMemo & useCallback
+
+* Optimize expensive calculations / stable functions.
+
+```tsx
+const result = useMemo(() => heavyCalc(items), [items]);
+const handleClick = useCallback(() => doSomething(id), [id]);
+```
+
+⚠ Don’t overuse → adds complexity and memory overhead.
+
+---
+
+### useRef
+
+* Holds mutable value without re-render.
+
+```tsx
+const inputRef = useRef<HTMLInputElement>(null);
+
+function focus() {
+  inputRef.current?.focus();
+}
+```
+
+⚠ `ref.current` changes do **not** trigger re-renders.
+
+---
+
+### useReducer
+
+* For complex state transitions.
+
+```tsx
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment": return { count: state.count + 1 };
+    default: return state;
+  }
+}
+const [state, dispatch] = useReducer(reducer, { count: 0 });
+```
+
+---
+
+### useContext
+
+* Avoids prop drilling.
+
+```tsx
+const ThemeContext = createContext("light");
+const theme = useContext(ThemeContext);
+```
+
+⚠ Any context change re-renders **all consumers** → use selectors/memoization for perf.
+
+---
+
+### useLayoutEffect
+
+* Fires **synchronously** after DOM mutations → useful for measurements.
+
+⚠ Blocks paint → avoid heavy logic here.
+
+---
+
+### useImperativeHandle + forwardRef
+
+* Expose controlled API from child to parent.
+
+```tsx
+const Input = forwardRef((props, ref) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus()
+  }));
+  return <input ref={inputRef} />;
+});
+```
+
+---
+
+### React 18+ Hooks
+
+* `useTransition` → mark non-urgent updates.
+* `useDeferredValue` → defer expensive recalculations.
+* `useId` → SSR-safe unique IDs.
+
+---
+
+## 3. Component Patterns - Basic
+
+
+### Controlled vs Uncontrolled
+
+```tsx
+// Controlled
+<input value={value} onChange={e => setValue(e.target.value)} />
+
+// Uncontrolled
+<input defaultValue="Hello" ref={ref} />
+```
+
+⚠ Prefer controlled for predictability; uncontrolled useful for performance.
+
+---
+
+### Render Props
+
+```tsx
+<DataProvider>
+  {data => <Chart data={data} />}
+</DataProvider>
+```
+
+---
+
+### Higher-Order Components
+
+```tsx
+function withAuth(Component) {
+  return props => <Component {...props} user={useUser()} />;
+}
+```
+
+---
+
+### Compound Components
+
+```tsx
+<Tabs>
+  <Tabs.List>...</Tabs.List>
+  <Tabs.Panel>...</Tabs.Panel>
+</Tabs>
+```
+
+---
+
+### Error Boundaries
+
+* Catch runtime errors → prevent app crash.
+
+```tsx
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+  componentDidCatch(error, info) { this.setState({ hasError: true }); }
+  render() { return this.state.hasError ? <Fallback /> : this.props.children; }
+}
+```
+
+---
+
+## 4. Rendering & Performance
+
+### Keys
+
+⚠ Use **stable IDs**, not indexes.
+
+---
+
+### React.memo / PureComponent
+
+```tsx
+const Button = React.memo(({ onClick }) => <button onClick={onClick}>Click</button>);
+```
+
+⚠ Shallow comparison only → may miss deep object changes.
+
+---
+
+### Code Splitting
+
+```tsx
+const Profile = React.lazy(() => import("./Profile"));
+<Suspense fallback={<Spinner />}><Profile /></Suspense>
+```
+
+---
+
+### Fiber & Concurrent Rendering
+
+* Fiber = React’s async rendering engine.
+* Allows interruption, prioritization, and concurrent features.
+
+---
+
+### Strict Mode
+
+* Double-invokes functions in dev to catch side effects.
+
+---
+
+### Batched Updates
+
+```tsx
+setA(1);
+setB(2);
+// ✅ Single re-render
+```
+
+---
+
+## 5. Server & Data
+
+### SSR (Server-Side Rendering)
+
+```tsx
+import { renderToPipeableStream } from "react-dom/server";
+
+app.get("/", (req, res) => {
+  const stream = renderToPipeableStream(<App />, { onAllReady() { stream.pipe(res); } });
+});
+```
+
+---
+
+### Hydration
+
+```tsx
+import { hydrateRoot } from "react-dom/client";
+hydrateRoot(document.getElementById("root")!, <App />);
+```
+
+---
+
+### SSG (Static Site Generation)
+
+* Run `renderToString` at build time, save HTML.
+* Usually handled by frameworks (Next.js, Gatsby).
+
+---
+
+### Suspense for Data Fetching
+
+```tsx
+const resource = fetchData();
+
+function Profile() {
+  const data = resource.read();
+  return <div>{data.name}</div>;
+}
+```
+
+⚠ Still experimental outside frameworks.
+
+---
+
+### Server Components (RSC)
+
+* Run on server, zero client bundle.
+* Requires bundler integration (Next.js, Vite plugin).
+
+---
+
+## 6. Ecosystem & State Management
+
+* **Redux**: predictable state container.
+* **Zustand/Jotai/Recoil**: modern minimal stores.
+* **React Query**: server-state management, caching, revalidation.
+
+---
+
+## 7. Advanced & Edge Cases
+
+### Portals
+
+```tsx
+createPortal(<Modal />, document.body);
+```
+
+---
+
+### Fragments
+
+```tsx
+<>
+  <li>A</li>
+  <li>B</li>
+</>
+```
+
+---
+
+### Synthetic Events
+
+* React normalizes events.
+* React \<17 pooled events → in async callbacks, event values were null.
+
+---
+
+### Ref Forwarding
+
+```tsx
+const Input = forwardRef((props, ref) => <input ref={ref} {...props} />);
+```
+
+---
+
+### Immutability
+
+```tsx
+// ✅
+setTodos([...todos, newTodo]);
+
+// ❌
+todos.push(newTodo); setTodos(todos);
+```
+
+⚠ React compares by reference → mutations break updates.
+
+## 8. React Compiler
+
+### 1) Child Re-renders from Inline Handlers
+
+**Before (manual memo hell):**
+```tsx
+function Parent({ user }: { user: { id: string; name: string } }) {
+  const onSelect = useCallback(() => {
+    console.log(user.id);
+  }, [user.id]);
+
+  return <UserRow user={user} onSelect={onSelect} />;
+}
+
+const UserRow = React.memo(function UserRow({ user, onSelect }: {
+  user: { id: string; name: string };
+  onSelect: () => void;
+}) {
+  // ...heavy row UI
+  return <button onClick={onSelect}>{user.name}</button>;
+});
+````
+
+**After (compiler-optimized plain code):**
+
+```tsx
+function Parent({ user }: { user: { id: string; name: string } }) {
+  // The compiler can keep `onSelect` stable when `user.id` doesn't change.
+  const onSelect = () => console.log(user.id);
+  return <UserRow user={user} onSelect={onSelect} />;
+}
+
+function UserRow({ user, onSelect }: {
+  user: { id: string; name: string };
+  onSelect: () => void;
+}) {
+  return <button onClick={onSelect}>{user.name}</button>;
+}
+```
+
+**Why it’s safe:** The compiler proves `onSelect` depends only on `user.id`; it generates an equivalent stable function so `UserRow` won’t re-render unless its inputs change.
+
+---
+
+### 2) Derived Data (kill most `useMemo`)
+
+**Before:**
+
+```tsx
+function Search({ items, q }: { items: string[]; q: string }) {
+  const filtered = useMemo(
+    () => items.filter(i => i.toLowerCase().includes(q.toLowerCase())),
+    [items, q]
+  );
+  return <List data={filtered} />;
+}
+```
+
+**After:**
+
+```tsx
+function Search({ items, q }: { items: string[]; q: string }) {
+  const filtered = items.filter(i => i.toLowerCase().includes(q.toLowerCase()));
+  return <List data={filtered} />;
+}
+```
+
+**Note:** The compiler hoists/guards the expensive computation when inputs don’t change, removing the need for manual `useMemo`.
+
+---
+
+### 3) Props Created Inline (objects/arrays)
+
+**Before (causes deep re-renders):**
+
+```tsx
+function CardList({ theme }: { theme: "light" | "dark" }) {
+  return <Card options={{ theme, dense: true }} />;
+}
+```
+
+**After (compiler can stabilize):**
+
+```tsx
+function CardList({ theme }: { theme: "light" | "dark" }) {
+  // Compiler transforms to keep the object identity stable unless fields change.
+  const options = { theme, dense: true };
+  return <Card options={options} />;
+}
+```
+
+**Pitfall if you mutate:**
+
+```tsx
+// ❌ Don't mutate or conditionally add keys after creation — breaks analyzability
+options.extra = Math.random(); // non-deterministic
+```
+
+---
+
+### 4) Context Consumers Without Over-render
+
+**Before (manual selectors or memo):**
+
+```tsx
+const AuthContext = createContext<{ user: { id: string; name: string } | null }>({ user: null });
+
+function ProfileName() {
+  const { user } = useContext(AuthContext);
+  // Re-renders whenever any context value changes
+  return <span>{user?.name}</span>;
+}
+```
+
+**After (compiler isolates dependency):**
+
+```tsx
+function ProfileName() {
+  const { user } = useContext(AuthContext);
+  // Compiler can prove only `user?.name` matters here and avoid re-renders for other context changes.
+  return <span>{user?.name}</span>;
+}
+```
+
+**Rule:** The more precisely you reference what you need, the easier it is for the compiler to optimize.
+
+* Access `user.name` instead of spreading `...ctx` everywhere.
+* Prefer **immutable** context values.
+
+---
+
+### 5) Lists and `key` Semantics Still Matter
+
+**Before (index key -> bad diffing):**
+
+```tsx
+{todos.map((t, i) => <TodoItem key={i} todo={t} />)}
+```
+
+**After (stable IDs):**
+
+```tsx
+{todos.map(t => <TodoItem key={t.id} todo={t} />)}
+```
+
+**Why:** The compiler optimizes re-rendering, but reconciliation still relies on keys. Bad keys = wasted work.
+
+---
+
+### 6) Expensive Children + Prop Identity
+
+**Before (defensive `React.memo` everywhere):**
+
+```tsx
+const Chart = React.memo(function Chart({ data }: { data: number[] }) {
+  // heavy render
+  return <svg>{/* ... */}</svg>;
+});
+
+function Dashboard({ points }: { points: number[] }) {
+  const data = [...points]; // ❌ new array every render
+  return <Chart data={data} />;
+}
+```
+
+**After (let the compiler stabilize):**
+
+```tsx
+function Dashboard({ points }: { points: number[] }) {
+  // Keep references stable; compiler proves identity when inputs don't change.
+  const data = points;
+  return <Chart data={data} />;
+}
+
+// You can often drop `React.memo` on Chart entirely.
+```
+
+**Rule:** Avoid gratuitous cloning (`[...]`, `{...obj}`) unless you need to materialize a new value. The compiler can stabilize identity when you pass through the same reference.
+
+---
+
+### 7) Forms: Controlled Inputs Without Stale Closures
+
+**Before (over-memoized handlers):**
+
+```tsx
+function Form() {
+  const [v, setV] = useState("");
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setV(e.target.value);
+  }, []);
+  return <input value={v} onChange={onChange} />;
+}
+```
+
+**After (plain handler, compiler stabilizes):**
+
+```tsx
+function Form() {
+  const [v, setV] = useState("");
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setV(e.target.value);
+  return <input value={v} onChange={onChange} />;
+}
+```
+
+**Note:** The compiler keeps the function stable across renders unless its dependencies change.
+
+---
+
+### 8) Co-located Business Logic in Render
+
+**Before (fear of recompute):**
+
+```tsx
+function Price({ items }: { items: { price: number }[] }) {
+  const total = useMemo(() => items.reduce((s, i) => s + i.price, 0), [items]);
+  return <b>{total.toFixed(2)}</b>;
+}
+```
+
+**After (write the obvious code):**
+
+```tsx
+function Price({ items }: { items: { price: number }[] }) {
+  const total = items.reduce((s, i) => s + i.price, 0);
+  return <b>{total.toFixed(2)}</b>;
+}
+```
+
+**Why:** The compiler hoists and guards the reduction when `items` hasn’t changed.
+
+---
+
+### 9) Interactions with `useEffect`
+
+**Before (over-specified deps):**
+
+```tsx
+useEffect(() => {
+  analytics.track("view", { locale: navigator.language });
+}, [navigator.language]); // ❌ non-serializable + noisy
+```
+
+**After (compiler-safe & deterministic):**
+
+```tsx
+useEffect(() => {
+  analytics.track("view", { /* derived in effect */ });
+}, []); // If the effect truly doesn't need reactive deps, keep it empty.
+```
+
+**Rule:** Effects should reflect *real* reactive dependencies. The compiler optimizes render-time code; effects still require correctness first.
+
+---
+
+### 10) Server Components Boundaries
+
+**Before (manual memo on client wrappers):**
+
+```tsx
+// Client component wrapping server-fetched data
+const ClientChart = React.memo(function ClientChart({ data }: { data: number[] }) {
+  return <Chart data={data} />;
+});
+```
+
+**After (usually unnecessary):**
+
+```tsx
+function ClientChart({ data }: { data: number[] }) {
+  // Compiler stabilizes props; avoid premature React.memo.
+  return <Chart data={data} />;
+}
+```
+
+**Note:** Keep boundaries clear (server vs client). The compiler helps on the client side; server code is rendered once per request or during build.
+
+---
+
+### ⚠️ Pitfalls & “Won’t Optimize” Cases
+
+1. **Mutations & Non-determinism**
+
+   * Mutating props/state objects in-place.
+   * Using `Math.random()`, `Date.now()`, reading global mutable singletons during render.
+   * Conditional object shapes (adding/removing keys per render).
+
+2. **Side Effects in Render**
+
+   * Logging is fine, but DOM/IO/requests in render are not analyzable.
+
+3. **Rule-of-Hooks Violations**
+
+   * Dynamic hook calls, early returns around hooks.
+
+4. **Dynamic Prop Spreads of Unknown Shape**
+
+   * `(<Comp {...somethingMutable} />)` makes it hard to reason about identity.
+   * Prefer explicit props or stable, frozen objects.
+
+5. **Unstable Context Values**
+
+   * Re-computing a new provider `value={{...}}` every render with fresh object references.
+   * Fix: compute provider value once or compose stable primitives.
+
+---
+
+## 9. React Patterns
+
+### Composition & API Design
+
+* **Component Composition** – Build UIs by nesting components; favors reuse over inheritance.
+* **Compound Components** – Parent exposes subcomponents via context (e.g., `<Tabs><Tabs.List/><Tabs.Panel/></Tabs>`).
+* **Polymorphic “as” Prop** – Components render different HTML tags via `as` (headless, accessible APIs).
+* **Slot / Children-as-API** – Named “slots” via context or props for flexible layout regions.
+* **Headless Components** – Logic-only components/hooks; consumers bring their own markup/styles.
+* **Render Props** – Child is a function that receives state/logic (`children={(state) => ...}`).
+* **Higher-Order Components (HOC)** – Function that enhances a component (`withAuth(Component)`).
+* **Controlled vs Uncontrolled** – External vs internal state ownership for inputs and widgets.
+* **Prop Getters / Prop Collections** – Functions that return the right props to spread (accessibility baked in).
+* **State Reducer Pattern** – Allow consumers to intercept/modify internal state transitions.
+
+### State, Data & Effects
+
+* **Custom Hooks** – Extract reusable logic (`useX`) with a stable API surface.
+* **Context Provider Pattern** – Global-ish state via `<Provider value={...}>` + consumers.
+* **Context Selector Pattern** – Fine-grained subscriptions to avoid re-renders.
+* **External Store / Observer Pattern** – Colocate state outside React; subscribe via `useSyncExternalStore`.
+* **State Machine / Statechart** – Deterministic UI via machine transitions (XState or homegrown).
+* **Data Fetching with Suspense** – Declarative loading via resource boundaries (frameworks or libraries).
+* **Server Components (RSC) Boundaries** – Split server-only logic from client interactivity.
+* **Action/Mutation Pattern (React 19)** – Form actions / server actions to co-locate mutations with UI.
+* **Optimistic Updates** – Update UI first, reconcile on server response (with rollback).
+* **Event Bus / Pub-Sub** – Cross-tree communication without prop drilling (sparingly).
+
+### Rendering & Performance
+
+* **Memoization (Component & Values)** – `React.memo`, `useMemo`, `useCallback` for hot paths.
+* **Keyed Lists** – Stable keys to guide reconciliation and enable item-level updates.
+* **Virtualization** – Render windows of large lists (react-window/virt).
+* **Deferred/Transition Updates** – `useTransition`, `useDeferredValue` for responsiveness.
+* **Skeletons & Progressive Disclosure** – Perceived performance; load essentials first.
+* **Code Splitting / Lazy Loading** – `React.lazy` + `Suspense` to split bundles by route/feature.
+* **Portal Pattern** – Render outside hierarchy for modals, toasts, tooltips.
+* **Error Boundary** – Catch render-time errors and show fallbacks.
+* **Layout Effect for Measurements** – `useLayoutEffect` for sync layout reads/writes.
+* **Controlled Re-render Boundaries** – Break big trees with memoized subtrees or islands.
+
+### Forms & Interaction
+
+* **Form Controller Pattern** – One hook to control many inputs (e.g., react-hook-form).
+* **Field Array Pattern** – Dynamic lists of fields with stable keys.
+* **Validation Strategy Pattern** – Sync, async, schema-based (Zod/Yup) with debounced effects.
+* **Prop Drilling Avoidance** – Elevate or centralize handlers via context/custom hooks.
+* **Command Palette / Command Pattern** – Centralize actions; UI invokes commands by id.
+
+### API Surface & Reusability
+
+* **Configuration via Objects** – Accept one `options` object to keep prop APIs stable/extensible.
+* **Inversion of Control** – Let consumers pass behavior (callbacks, render functions) rather than hardcoding.
+* **Feature Flags / Capability Injection** – Toggle features at runtime via context or props.
+* **Adapter Pattern** – Wrap third-party APIs (maps, charts) behind a consistent React API.
+* **Facade Pattern** – Provide a simplified public API over complex internals (hooks + provider).
+
+### Styling & Theming
+
+* **Design Tokens via Context** – Theme values from provider; components subscribe selectively.
+* **CSS-in-JS / Utility-First** – Encapsulate styles or expose class composition helpers.
+* **Variant Pattern** – Map logical variants (size, intent) to classes/props in a single component.
+
+### Testing & Architecture
+
+* **Presenter/Container (Smart/Dumb) Components** – Separate data-fetching from pure UI.
+* **Page/Feature/Shared Layers** – Organize code by vertical features with shared primitives.
+* **Dependency Injection via Context** – Swap implementations in tests (e.g., mock services).
+
+### SSR / RSC / Routing (high level)
+
+* **Island Architecture** – Hydrate only interactive islands on the client.
+* **Streaming SSR with Suspense** – Stream HTML chunks and progressively hydrate.
+* **Route-as-Data-Boundary** – Co-locate data fetching and error/loading states by route segment.
+
+---
+
+### Handy “When to Use What” (cheat-mode)
+
+* **Reusability across many UIs?** Headless + custom hooks + prop getters.
+* **Complex widget with subparts?** Compound components with context.
+* **Consumers need to alter internal decisions?** State reducer pattern.
+* **Performance hot area?** Virtualization, transitions, memoized subtrees.
+* **Cross-cutting app state?** Context + context selectors or external store.
+* **Integration with non-React libs?** Adapter + portal (for overlays).
+* **Large bundle?** Code split by route/feature + lazy boundaries.
+
+---
+
